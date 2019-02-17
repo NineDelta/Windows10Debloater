@@ -1,0 +1,40 @@
+[
+    {
+        "Name": "Cortana",
+        "Description": "Cortana Registry Keys",
+        "Keys": [
+            { 
+                "Description": "Accept the Cortana privacy policy",
+                "KeyName": "AcceptedPrivacyPolicy",
+                "Value": 0,
+                "DefaultValue": 1,
+				"Path": "HKCU:\\SOFTWARE\\Microsoft\\Personalization\\Settings", 
+				"ShouldRemove": true 
+            },
+            {
+                "Description": "Prevent Cortana from collecting dictionary information",
+                "KeyName": "RestrictImplicitTextCollection",
+                "Value": 1,
+                "DefaultValue": 0,
+                "Path": "HKCU:\\SOFTWARE\\Microsoft\\InputPersonalization", 
+                "ShouldRemove": true 
+            },
+            {
+                "Description": "Prevent Cortana from collecting handwriting information",
+                "KeyName": "RestrictImplicitInkCollection",
+                "Value": 1,
+                "DefaultValue": 0,
+                "Path": "HKCU:\\SOFTWARE\\Microsoft\\InputPersonalization", 
+                "ShouldRemove": true 
+            },
+            {
+                "Description": "Allow Cortana to access Contacts",
+                "KeyName": "HarvestContacts",
+                "Value": 0,
+                "DefaultValue": 1,
+                "Path": "HKCU:\\SOFTWARE\\Microsoft\\InputPersonalization\\TrainedDataStore", 
+                "ShouldRemove": true 
+            }
+        ]
+    }
+]

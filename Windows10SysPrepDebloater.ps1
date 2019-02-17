@@ -4,28 +4,28 @@
 #This is the switch parameter for running this script as a 'silent' script, for use in MDT images or any type of mass deployment without user interaction.
 
 param (
-  [switch]$Debloat, [switch]$SysPrep
+    [switch]$Debloat, [switch]$SysPrep
 )
 
 Function Begin-SysPrep {
 
     param([switch]$SysPrep)
-        Write-Verbose -Message ('Starting Sysprep Fixes')
+    Write-Verbose -Message ('Starting Sysprep Fixes')
  
-        # Disable Windows Store Automatic Updates
-        Write-Verbose -Message "Adding Registry key to Disable Windows Store Automatic Updates"
-        $registryPath = "HKLM:\SOFTWARE\Policies\Microsoft\WindowsStore"
-        If (!(Test-Path $registryPath)) {
-            Mkdir $registryPath -ErrorAction SilentlyContinue
-            New-ItemProperty $registryPath -Name AutoDownload -Value 2 
-        }
-        Else {
-            Set-ItemProperty $registryPath -Name AutoDownload -Value 2 
-        }
-        #Stop WindowsStore Installer Service and set to Disabled
-        Write-Verbose -Message ('Stopping InstallService')
-        Stop-Service InstallService
- }
+    # Disable Windows Store Automatic Updates
+    Write-Verbose -Message "Adding Registry key to Disable Windows Store Automatic Updates"
+    $registryPath = "HKLM:\SOFTWARE\Policies\Microsoft\WindowsStore"
+    If (!(Test-Path $registryPath)) {
+        Mkdir $registryPath -ErrorAction SilentlyContinue
+        New-ItemProperty $registryPath -Name AutoDownload -Value 2 
+    }
+    Else {
+        Set-ItemProperty $registryPath -Name AutoDownload -Value 2 
+    }
+    #Stop WindowsStore Installer Service and set to Disabled
+    Write-Verbose -Message ('Stopping InstallService')
+    Stop-Service InstallService
+}
 
 #Creates a PSDrive to be able to access the 'HKCR' tree
 New-PSDrive -Name HKCR -PSProvider Registry -Root HKEY_CLASSES_ROOT
@@ -167,12 +167,12 @@ Function Protect-Privacy {
     }
     
     
-     Write-Output "Removing CloudStore from registry if it exists"
-     $CloudStore = 'HKCUSoftware\Microsoft\Windows\CurrentVersion\CloudStore'
-     If (Test-Path $CloudStore) {
-     Stop-Process Explorer.exe -Force
-     Remove-Item $CloudStore
-     Start-Process Explorer.exe -Wait
+    Write-Output "Removing CloudStore from registry if it exists"
+    $CloudStore = 'HKCUSoftware\Microsoft\Windows\CurrentVersion\CloudStore'
+    If (Test-Path $CloudStore) {
+        Stop-Process Explorer.exe -Force
+        Remove-Item $CloudStore
+        Start-Process Explorer.exe -Wait
     }
 
     #Loads the registry keys/values below into the NTUSER.DAT file which prevents the apps from redownloading. Credit to a60wattfish
@@ -197,36 +197,38 @@ Function FixWhitelistedApps {
     
     Param([switch]$Debloat)
     
-    If(!(Get-AppxPackage -AllUsers | Select Microsoft.Paint3D, Microsoft.MSPaint, Microsoft.WindowsCalculator, Microsoft.WindowsStore, Microsoft.MicrosoftStickyNotes, Microsoft.WindowsSoundRecorder, Microsoft.Windows.Photos)) {
+    If (!(Get-AppxPackage -AllUsers | Select Microsoft.Paint3D, Microsoft.MSPaint, Microsoft.WindowsCalculator, Microsoft.WindowsStore, Microsoft.MicrosoftStickyNotes, Microsoft.WindowsSoundRecorder, Microsoft.Windows.Photos)) {
     
-    #Credit to abulgatz for the 4 lines of code
-    Get-AppxPackage -allusers Microsoft.Paint3D | Foreach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-    Get-AppxPackage -allusers Microsoft.MSPaint | Foreach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-    Get-AppxPackage -allusers Microsoft.WindowsCalculator | Foreach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-    Get-AppxPackage -allusers Microsoft.WindowsStore | Foreach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-    Get-AppxPackage -allusers Microsoft.MicrosoftStickyNotes | Foreach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-    Get-AppxPackage -allusers Microsoft.WindowsSoundRecorder | Foreach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-    Get-AppxPackage -allusers Microsoft.Windows.Photos | Foreach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"} }
+        #Credit to abulgatz for the 4 lines of code
+        Get-AppxPackage -allusers Microsoft.Paint3D | Foreach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
+        Get-AppxPackage -allusers Microsoft.MSPaint | Foreach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
+        Get-AppxPackage -allusers Microsoft.WindowsCalculator | Foreach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
+        Get-AppxPackage -allusers Microsoft.WindowsStore | Foreach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
+        Get-AppxPackage -allusers Microsoft.MicrosoftStickyNotes | Foreach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
+        Get-AppxPackage -allusers Microsoft.WindowsSoundRecorder | Foreach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
+        Get-AppxPackage -allusers Microsoft.Windows.Photos | Foreach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"} 
+    }
 }
 
 Function CheckDMWService {
-
-  Param([switch]$Debloat)
+    Param([switch]$Debloat)
   
-If (Get-Service -Name dmwappushservice | Where-Object {$_.StartType -eq "Disabled"}) {
-    Set-Service -Name dmwappushservice -StartupType Automatic}
+    If (Get-Service -Name dmwappushservice | Where-Object {$_.StartType -eq "Disabled"}) {
+        Set-Service -Name dmwappushservice -StartupType Automatic
+    }
 
-If(Get-Service -Name dmwappushservice | Where-Object {$_.Status -eq "Stopped"}) {
-   Start-Service -Name dmwappushservice} 
-  }
+    If (Get-Service -Name dmwappushservice | Where-Object {$_.Status -eq "Stopped"}) {
+        Start-Service -Name dmwappushservice
+    } 
+}
 
 Function CheckInstallService {
-  Param([switch]$Debloat)
-          If (Get-Service -Name InstallService | Where-Object {$_.Status -eq "Stopped"}) {  
-            Start-Service -Name InstallService
-            Set-Service -Name InstallService -StartupType Automatic 
-            }
-        }
+    Param([switch]$Debloat)
+    If (Get-Service -Name InstallService | Where-Object {$_.Status -eq "Stopped"}) {  
+        Start-Service -Name InstallService
+        Set-Service -Name InstallService -StartupType Automatic 
+    }
+}
 
 Write-Output "Initiating Sysprep"
 Begin-SysPrep

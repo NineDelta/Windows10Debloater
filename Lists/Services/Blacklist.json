@@ -1,0 +1,18 @@
+[
+    {
+        "Name": "Services",
+        "Description": "Unnecessary scheduled tasks",
+        "Services": [
+            { 
+				"Name": "dmwappushservice", 
+                "Description": "WAP Push Service",
+				"ShouldRemove": true 
+            },            
+            { 
+				"Name": "DiagTrack", 
+                "Description": "Diagnostics Tracking Service",
+				"ShouldRemove": true 
+			}
+        ]
+    }
+]

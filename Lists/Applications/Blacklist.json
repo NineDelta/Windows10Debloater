@@ -268,12 +268,12 @@
             {
                 "Name": "*Microsoft.Advertising.Xaml_10.1712.5.0_x64__8wekyb3d8bbwe*", 
                 "Description": "",
-				"ShouldRemove": true 
+				"ShouldRemove": false 
             },
             {
                 "Name": "*Microsoft.Advertising.Xaml_10.1712.5.0_x86__8wekyb3d8bbwe*", 
                 "Description": "",
-				"ShouldRemove": true 
+				"ShouldRemove": false 
             },
             {
                 "Name": "*Microsoft.BingWeather*", 
@@ -298,12 +298,12 @@
             {
                 "Name": "*Microsoft.WindowsCalculator*", 
                 "Description": "",
-				"ShouldRemove": true 
+				"ShouldRemove": false 
             },
             {
                 "Name": "*Microsoft.WindowsStore*", 
                 "Description": "",
-				"ShouldRemove": true
+				"ShouldRemove": false
             }
         ]
     }
