@@ -1,0 +1,75 @@
+{
+    "Windows10Apps": {
+        "Description": "Windows 10 AppX Apps",
+        "Apps": [
+            "Microsoft.BingNews",
+            "Microsoft.GetHelp",
+            "Microsoft.Getstarted",
+            "Microsoft.Messaging",
+            "Microsoft.Microsoft3DViewer",
+            "Microsoft.MicrosoftOfficeHub",
+            "Microsoft.MicrosoftSolitaireCollection",
+            "Microsoft.NetworkSpeedTest",
+            "Microsoft.News",
+            "Microsoft.Office.Lens",
+            "Microsoft.Office.OneNote",
+            "Microsoft.Office.Sway",
+            "Microsoft.OneConnect",
+            "Microsoft.People",
+            "Microsoft.Print3D",
+            "Microsoft.RemoteDesktop",
+            "Microsoft.SkypeApp",
+            "Microsoft.StorePurchaseApp",
+            "Microsoft.Office.Todo.List",
+            "Microsoft.Whiteboard",
+            "Microsoft.WindowsAlarms",
+            "microsoft.windowscommunicationsapps",
+            "Microsoft.WindowsFeedbackHub",
+            "Microsoft.WindowsMaps",
+            "Microsoft.WindowsSoundRecorder",
+            "Microsoft.Xbox.TCUI",
+            "Microsoft.XboxApp",
+            "Microsoft.XboxGameOverlay",
+            "Microsoft.XboxIdentityProvider",
+            "Microsoft.XboxSpeechToTextOverlay",
+            "Microsoft.ZuneMusic",
+            "Microsoft.ZuneVideo"
+        ]
+    },    
+    "SponsoredApps": {
+        "Description": "Sponsored Windows 10 AppX Apps, add apps/featuring using the '*AppName*' format",
+        "Apps": [
+            "*EclipseManager*",
+            "*ActiproSoftwareLLC*",
+            "*AdobeSystemsIncorporated.AdobePhotoshopExpress*",
+            "*Duolingo-LearnLanguagesforFree*",
+            "*PandoraMediaInc*",
+            "*CandyCrush*",
+            "*Wunderlist*",
+            "*Flipboard*",
+            "*Twitter*",
+            "*Facebook*",
+            "*Spotify*",
+            "*Minecraft*",
+            "*Royal Revolt*",
+            "*Sway*",
+            "*Speed Test*",
+            "*Dolby*",
+            "*Windows.CBSPreview*"
+        ]
+    },
+    "OptionalApps": {
+        "Description": "Typically not removed but you can if you need to for some reason",
+        "Apps:": [
+            "*Microsoft.Advertising.Xaml_10.1712.5.0_x64__8wekyb3d8bbwe*",
+            "*Microsoft.Advertising.Xaml_10.1712.5.0_x86__8wekyb3d8bbwe*",
+            "*Microsoft.BingWeather*",
+            "*Microsoft.MSPaint*",
+            "*Microsoft.MicrosoftStickyNotes*",
+            "*Microsoft.Windows.Photos*",
+            "*Microsoft.WindowsCalculator*",
+            "*Microsoft.WindowsStore*",
+            "Microsoft.WindowsCamera"
+        ]
+    }
+}
