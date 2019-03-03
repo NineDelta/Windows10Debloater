@@ -36,6 +36,7 @@ Function Enable-Privacy {
     Write-Output "Enabling privacy options..."
     $PrivacyKeys | ForEach-Object { 
         If (!(Test-Path $_.Path)) { New-Item $_.Path }
+        Write-Output "Key:   ${_.KeyName}   Path:   ${_.Path}";
         Set-ItemProperty -Path $_.Path -Name $_.KeyName -Value $_.Value
     }
     Write-Output "Privacy enabled."
@@ -48,6 +49,7 @@ Function Disable-Privacy {
     Write-Output "Disabling privacy options..."
     $PrivacyKeys | ForEach-Object { 
         If (!(Test-Path $_.Path)) { New-Item $_.Path }
+        Write-Output "Key:   ${_.KeyName}   Path:   ${_.Path}";
         Set-ItemProperty -Path $_.Path -Name $_.KeyName -Value $_.DefaultValue
     }
     Write-Output "Privacy disabled."

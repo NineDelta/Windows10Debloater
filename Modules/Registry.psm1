@@ -58,9 +58,10 @@ Function Remove-RegistryKeys {
     Param()
 
     Write-Output "Removing bloatware registry keys..."
-    $Apps.SimpleRegistryKeys | ForEach-Object { Remove-Item -Recurse }
+    $Apps.SimpleRegistryKeys | ForEach-Object { Write-Output "Path:   ${_}"; Remove-Item -Recurse }
     $Apps.RegistryKeys | ForEach-Object { 
         If (!(Test-Path $_.Path)) { New-Item $_.Path }
+        Write-Output "Key:   ${_.KeyName}   Path:   ${_.Path}";
         Set-ItemProperty -Path $_.Path -Name $_.KeyName -Value $_.Value
     }
     Write-Output "Bloatware registry keys removed."
@@ -73,6 +74,7 @@ Function Restore-RegistryKeys {
     Write-Output "Restoring bloatware registry keys..."
     $Apps.RegistryKeys | ForEach-Object { 
         If (!(Test-Path $_.Path)) { New-Item $_.Path }
+        Write-Output "Key:   ${_.KeyName}   Path:   ${_.Path}";
         Set-ItemProperty -Path $_.Path -Name $_.KeyName -Value $_.DefaultValue
     }
     Write-Output "Bloatware registry keys restored."

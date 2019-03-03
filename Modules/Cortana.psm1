@@ -17,6 +17,7 @@ Function Disable-Cortana {
 
     $CortanaKeys | ForEach-Object { 
         If (!(Test-Path $_.Path)) { New-Item $_.Path }
+        Write-Output "Key:   ${_.KeyName}   Path:   ${_.Path}";
         Set-ItemProperty -Path $_.Path -Name $_.KeyName -Value $_.Value
     }
 }
@@ -27,6 +28,7 @@ Function Enable-Cortana {
 
     $CortanaKeys | ForEach-Object { 
         If (!(Test-Path $_.Path)) { New-Item $_.Path }
+        Write-Output "Key:   ${_.KeyName}   Path:   ${_.Path}";
         Set-ItemProperty -Path $_.Path -Name $_.KeyName -Value $_.DefaultValue
     }
 }

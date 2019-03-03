@@ -32,9 +32,10 @@ Function Remove-ExplorerItems {
     [CmdletBinding()]
     Param()
 
-    $ExplorerKeys.SimpleRegistryKeys | ForEach-Object { Remove-Item -Recurse }
+    $ExplorerKeys.SimpleRegistryKeys | ForEach-Object { Write-Output "Path:   ${_}"; Remove-Item -Recurse }
     $ExplorerKeys.RegistryKeys | ForEach-Object { 
         If (!(Test-Path $_.Path)) { New-Item $_.Path }
+        Write-Output "Key:   ${_.KeyName}   Path:   ${_.Path}";
         Set-ItemProperty -Path $_.Path -Name $_.KeyName -Value $_.Value
     }
 
@@ -54,6 +55,7 @@ Function Restore-ExplorerItems {
 
     $ExplorerKeys.RegistryKeys | ForEach-Object { 
         If (!(Test-Path $_.Path)) { New-Item $_.Path }
+        Write-Output "Key:   ${_.KeyName}   Path:   ${_.Path}";
         Set-ItemProperty -Path $_.Path -Name $_.KeyName -Value $_.DefaultValue
     }
 }

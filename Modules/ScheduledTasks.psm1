@@ -28,10 +28,7 @@ Function Disable-ScheduledTasks {
         
     Write-Output "Disabling scheduled tasks..."
     $ScheduledTasks.Tasks | ForEach-Object { Get-ScheduledTask | Disable-ScheduledTask }
-    $ScheduledTasks.RegistryKeys | ForEach-Object { 
-        If (!(Test-Path $_.Path)) { New-Item $_.Path }
-        Set-ItemProperty -Path $_.Path -Name $_.KeyName -Value $_.Value
-    }
+    $ScheduledTasks.RegistryKeys | ForEach-Object { Write-Output "Path:   ${_}"; Remove-Item -Recurse }
     Write-Output "Scheduled tasks disabled."
 }
 
@@ -41,9 +38,5 @@ Function Enable-ScheduledTasks {
         
     Write-Output "Enabling scheduled tasks..."
     $ScheduledTasks.Tasks | ForEach-Object { Get-ScheduledTask | Enable-ScheduledTask }
-    $ScheduledTasks.RegistryKeys | ForEach-Object { 
-        If (!(Test-Path $_.Path)) { New-Item $_.Path }
-        Set-ItemProperty -Path $_.Path -Name $_.KeyName -Value $_.DefaultValue
-    }
     Write-Output "Scheduled tasks enabled."
 }
