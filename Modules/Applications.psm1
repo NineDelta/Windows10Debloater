@@ -86,7 +86,9 @@ function Remove-Apps {
     [CmdletBinding()]
     Param([Parameter(Mandatory=$false)][switch]$RemoveAll)
 
+    Write-Output "Removing apps..."
     If ($RemoveAll) { Remove-AppsUsingWhitelist } Else { Remove-AppsUsingBlacklist }
+    Write-Output "Apps removed."
 }
 
 Function Restore-Apps {

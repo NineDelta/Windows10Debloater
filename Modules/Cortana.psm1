@@ -15,20 +15,24 @@ Function Disable-Cortana {
     [CmdletBinding()]
     Param()
 
+    Write-Output "Disabling Cortana..."
     $CortanaKeys | ForEach-Object { 
         If (!(Test-Path $_.Path)) { New-Item $_.Path }
         Write-Output "Key:   ${_.KeyName}   Path:   ${_.Path}";
         Set-ItemProperty -Path $_.Path -Name $_.KeyName -Value $_.Value
     }
+    Write-Output "Cortana disabled."
 }
 
 Function Enable-Cortana {
     [CmdletBinding()]
     Param()
 
+    Write-Output "Enabling Cortana..."
     $CortanaKeys | ForEach-Object { 
         If (!(Test-Path $_.Path)) { New-Item $_.Path }
         Write-Output "Key:   ${_.KeyName}   Path:   ${_.Path}";
         Set-ItemProperty -Path $_.Path -Name $_.KeyName -Value $_.DefaultValue
     }
+    Write-Output "Cortana enabled."
 }
