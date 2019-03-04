@@ -36,9 +36,7 @@ Function DebloatAll {
     
     #Removes AppxPackages
     #Credit to /u/GavinEke for a modified version of my whitelist code
-    [regex]$WhitelistedApps = 'Microsoft.ScreenSketch|Microsoft.Paint3D|Microsoft.WindowsCalculator|Microsoft.WindowsStore|Microsoft.Windows.Photos|CanonicalGroupLimited.UbuntuonWindows|`
-    Microsoft.XboxGameCallableUI|Microsoft.XboxGamingOverlay|Microsoft.Xbox.TCUI|Microsoft.XboxGamingOverlay|Microsoft.XboxIdentityProvider|Microsoft.MicrosoftStickyNotes|Microsoft.MSPaint|Microsoft.WindowsCamera|.NET|Framework|`
-    Microsoft.HEIFImageExtension|Microsoft.ScreenSketch|Microsoft.StorePurchaseApp|Microsoft.VP9VideoExtensions|Microsoft.WebMediaExtensions|Microsoft.WebpImageExtension|Microsoft.DesktopAppInstaller|WindSynthBerry|MIDIBerry|Slack'
+    [regex]$WhitelistedApps = 'Microsoft.WindowsCalculator|Microsoft.WindowsStore|Microsoft.XboxIdentityProvider|.NET|Framework|Microsoft.StorePurchaseApp|Microsoft.DesktopAppInstaller'
     Get-AppxPackage -AllUsers | Where-Object {$_.Name -NotMatch $WhitelistedApps} | Remove-AppxPackage
     Get-AppxPackage | Where-Object {$_.Name -NotMatch $WhitelistedApps} | Remove-AppxPackage
     Get-AppxProvisionedPackage -Online | Where-Object {$_.PackageName -NotMatch $WhitelistedApps} | Remove-AppxProvisionedPackage -Online
@@ -73,7 +71,7 @@ Function DebloatBlacklist {
         "Microsoft.Office.Todo.List"
         "Microsoft.Whiteboard"
         "Microsoft.WindowsAlarms"
-        #"Microsoft.WindowsCamera"
+        "Microsoft.WindowsCamera"
         "microsoft.windowscommunicationsapps"
         "Microsoft.WindowsFeedbackHub"
         "Microsoft.WindowsMaps"
@@ -107,12 +105,12 @@ Function DebloatBlacklist {
         "*Windows.CBSPreview*"
              
         #Optional: Typically not removed but you can if you need to for some reason
-        #"*Microsoft.Advertising.Xaml_10.1712.5.0_x64__8wekyb3d8bbwe*"
-        #"*Microsoft.Advertising.Xaml_10.1712.5.0_x86__8wekyb3d8bbwe*"
-        #"*Microsoft.BingWeather*"
-        #"*Microsoft.MSPaint*"
-        #"*Microsoft.MicrosoftStickyNotes*"
-        #"*Microsoft.Windows.Photos*"
+        "*Microsoft.Advertising.Xaml_10.1712.5.0_x64__8wekyb3d8bbwe*"
+        "*Microsoft.Advertising.Xaml_10.1712.5.0_x86__8wekyb3d8bbwe*"
+        "*Microsoft.BingWeather*"
+        "*Microsoft.MSPaint*"
+        "*Microsoft.MicrosoftStickyNotes*"
+        "*Microsoft.Windows.Photos*"
         #"*Microsoft.WindowsCalculator*"
         #"*Microsoft.WindowsStore*"
     )
@@ -220,18 +218,18 @@ Function Protect-Privacy {
     If (!(Test-Path $registryOEM)) {
         New-Item $registryOEM
     }
-    Set-ItemProperty $registryOEM  ContentDeliveryAllowed -Value 0 
-    Set-ItemProperty $registryOEM  OemPreInstalledAppsEnabled -Value 0 
-    Set-ItemProperty $registryOEM  PreInstalledAppsEnabled -Value 0 
-    Set-ItemProperty $registryOEM  PreInstalledAppsEverEnabled -Value 0 
-    Set-ItemProperty $registryOEM  SilentInstalledAppsEnabled -Value 0 
-    Set-ItemProperty $registryOEM  SystemPaneSuggestionsEnabled -Value 0          
+    Set-ItemProperty $registryOEM ContentDeliveryAllowed -Value 0 
+    Set-ItemProperty $registryOEM OemPreInstalledAppsEnabled -Value 0 
+    Set-ItemProperty $registryOEM PreInstalledAppsEnabled -Value 0 
+    Set-ItemProperty $registryOEM PreInstalledAppsEverEnabled -Value 0 
+    Set-ItemProperty $registryOEM SilentInstalledAppsEnabled -Value 0 
+    Set-ItemProperty $registryOEM SystemPaneSuggestionsEnabled -Value 0          
     
     #Preping mixed Reality Portal for removal    
     Write-Output "Setting Mixed Reality Portal value to 0 so that you can uninstall it in Settings"
     $Holo = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Holographic"    
     If (Test-Path $Holo) {
-        Set-ItemProperty $Holo  FirstRunSucceeded -Value 0 
+        Set-ItemProperty $Holo FirstRunSucceeded -Value 0 
     }
 
     #Disables Wi-fi Sense
@@ -242,12 +240,12 @@ Function Protect-Privacy {
     If (!(Test-Path $WifiSense1)) {
         New-Item $WifiSense1
     }
-    Set-ItemProperty $WifiSense1  Value -Value 0 
+    Set-ItemProperty $WifiSense1 Value -Value 0 
     If (!(Test-Path $WifiSense2)) {
         New-Item $WifiSense2
     }
-    Set-ItemProperty $WifiSense2  Value -Value 0 
-    Set-ItemProperty $WifiSense3  AutoConnectAllowedOEM -Value 0 
+    Set-ItemProperty $WifiSense2 Value -Value 0 
+    Set-ItemProperty $WifiSense3 AutoConnectAllowedOEM -Value 0 
         
     #Disables live tiles
     Write-Output "Disabling live tiles"
@@ -255,7 +253,7 @@ Function Protect-Privacy {
     If (!(Test-Path $Live)) {      
         New-Item $Live
     }
-    Set-ItemProperty $Live  NoTileApplicationNotification -Value 1 
+    Set-ItemProperty $Live NoTileApplicationNotification -Value 1 
         
     #Turns off Data Collection via the AllowTelemtry key by changing it to 0
     Write-Output "Turning off Data Collection"
@@ -263,13 +261,13 @@ Function Protect-Privacy {
     $DataCollection2 = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection"
     $DataCollection3 = "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Policies\DataCollection"    
     If (Test-Path $DataCollection1) {
-        Set-ItemProperty $DataCollection1  AllowTelemetry -Value 0 
+        Set-ItemProperty $DataCollection1 AllowTelemetry -Value 0 
     }
     If (Test-Path $DataCollection2) {
-        Set-ItemProperty $DataCollection2  AllowTelemetry -Value 0 
+        Set-ItemProperty $DataCollection2 AllowTelemetry -Value 0 
     }
     If (Test-Path $DataCollection3) {
-        Set-ItemProperty $DataCollection3  AllowTelemetry -Value 0 
+        Set-ItemProperty $DataCollection3 AllowTelemetry -Value 0 
     }
     
     #Disabling Location Tracking
@@ -294,12 +292,12 @@ Function Protect-Privacy {
         
     #Disables scheduled tasks that are considered unnecessary 
     Write-Output "Disabling scheduled tasks"
-    Get-ScheduledTask  XblGameSaveTaskLogon | Disable-ScheduledTask
-    Get-ScheduledTask  XblGameSaveTask | Disable-ScheduledTask
-    Get-ScheduledTask  Consolidator | Disable-ScheduledTask
-    Get-ScheduledTask  UsbCeip | Disable-ScheduledTask
-    Get-ScheduledTask  DmClient | Disable-ScheduledTask
-    Get-ScheduledTask  DmClientOnScenarioDownload | Disable-ScheduledTask
+    Get-ScheduledTask XblGameSaveTaskLogon | Disable-ScheduledTask
+    Get-ScheduledTask XblGameSaveTask | Disable-ScheduledTask
+    Get-ScheduledTask Consolidator | Disable-ScheduledTask
+    Get-ScheduledTask UsbCeip | Disable-ScheduledTask
+    Get-ScheduledTask DmClient | Disable-ScheduledTask
+    Get-ScheduledTask DmClientOnScenarioDownload | Disable-ScheduledTask
 
     Write-Output "Stopping and disabling Diagnostics Tracking Service"
     #Disabling the Diagnostics Tracking Service
@@ -307,13 +305,13 @@ Function Protect-Privacy {
     Set-Service "DiagTrack" -StartupType Disabled
 
     
-     Write-Output "Removing CloudStore from registry if it exists"
-     $CloudStore = 'HKCUSoftware\Microsoft\Windows\CurrentVersion\CloudStore'
-     If (Test-Path $CloudStore) {
-     Stop-Process Explorer.exe -Force
-     Remove-Item $CloudStore
-     Start-Process Explorer.exe -Wait
-   }
+    Write-Output "Removing CloudStore from registry if it exists"
+    $CloudStore = 'HKCUSoftware\Microsoft\Windows\CurrentVersion\CloudStore'
+    If (Test-Path $CloudStore) {
+        Stop-Process Explorer.exe -Force
+        Remove-Item $CloudStore
+        Start-Process Explorer.exe -Wait
+    }
 }
 
 Function DisableCortana {
@@ -364,23 +362,23 @@ Function Stop-EdgePDF {
     $NoPDF = "HKCR:\.pdf"
     $NoProgids = "HKCR:\.pdf\OpenWithProgids"
     $NoWithList = "HKCR:\.pdf\OpenWithList" 
-    If (!(Get-ItemProperty $NoPDF  NoOpenWith)) {
+    If (!(Get-ItemProperty $NoPDF NoOpenWith)) {
         New-ItemProperty $NoPDF NoOpenWith 
     }        
-    If (!(Get-ItemProperty $NoPDF  NoStaticDefaultVerb)) {
-        New-ItemProperty $NoPDF  NoStaticDefaultVerb 
+    If (!(Get-ItemProperty $NoPDF NoStaticDefaultVerb)) {
+        New-ItemProperty $NoPDF NoStaticDefaultVerb 
     }        
-    If (!(Get-ItemProperty $NoProgids  NoOpenWith)) {
-        New-ItemProperty $NoProgids  NoOpenWith 
+    If (!(Get-ItemProperty $NoProgids NoOpenWith)) {
+        New-ItemProperty $NoProgids NoOpenWith 
     }        
-    If (!(Get-ItemProperty $NoProgids  NoStaticDefaultVerb)) {
-        New-ItemProperty $NoProgids  NoStaticDefaultVerb 
+    If (!(Get-ItemProperty $NoProgids NoStaticDefaultVerb)) {
+        New-ItemProperty $NoProgids NoStaticDefaultVerb 
     }        
-    If (!(Get-ItemProperty $NoWithList  NoOpenWith)) {
-        New-ItemProperty $NoWithList  NoOpenWith
+    If (!(Get-ItemProperty $NoWithList NoOpenWith)) {
+        New-ItemProperty $NoWithList NoOpenWith
     }        
-    If (!(Get-ItemProperty $NoWithList  NoStaticDefaultVerb)) {
-        New-ItemProperty $NoWithList  NoStaticDefaultVerb 
+    If (!(Get-ItemProperty $NoWithList NoStaticDefaultVerb)) {
+        New-ItemProperty $NoWithList NoStaticDefaultVerb 
     }
             
     #Appends an underscore '_' to the Registry key for Edge
@@ -405,14 +403,14 @@ Function Revert-Changes {
     Write-Output "Re-enabling key to show advertisement information"
     $Advertising = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\AdvertisingInfo"
     If (Test-Path $Advertising) {
-        Set-ItemProperty $Advertising  Enabled -Value 1
+        Set-ItemProperty $Advertising Enabled -Value 1
     }
             
     #Enables Cortana to be used as part of your Windows Search Function
     Write-Output "Re-enabling Cortana to be used in your Windows Search"
     $Search = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search"
     If (Test-Path $Search) {
-        Set-ItemProperty $Search  AllowCortana -Value 1 
+        Set-ItemProperty $Search AllowCortana -Value 1 
     }
             
     #Re-enables the Windows Feedback Experience for sending anonymous data
@@ -429,13 +427,13 @@ Function Revert-Changes {
     If (!(Test-Path $registryPath)) {
         New-Item $registryPath 
     }
-    Set-ItemProperty $registryPath  DisableWindowsConsumerFeatures -Value 0 
+    Set-ItemProperty $registryPath DisableWindowsConsumerFeatures -Value 0 
         
     #Changes Mixed Reality Portal Key 'FirstRunSucceeded' to 1
     Write-Output "Setting Mixed Reality Portal value to 1"
     $Holo = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Holographic"
     If (Test-Path $Holo) {
-        Set-ItemProperty $Holo  FirstRunSucceeded -Value 1 
+        Set-ItemProperty $Holo FirstRunSucceeded -Value 1 
     }
         
     #Re-enables live tiles
@@ -444,7 +442,7 @@ Function Revert-Changes {
     If (!(Test-Path $Live)) {
         New-Item $Live 
     }
-    Set-ItemProperty $Live  NoTileApplicationNotification -Value 0 
+    Set-ItemProperty $Live NoTileApplicationNotification -Value 0 
        
     #Re-enables data collection
     Write-Output "Re-enabling data collection"
@@ -452,7 +450,7 @@ Function Revert-Changes {
     If (!(Test-Path $DataCollection)) {
         New-Item $DataCollection
     }
-    Set-ItemProperty $DataCollection  AllowTelemetry -Value 1
+    Set-ItemProperty $DataCollection AllowTelemetry -Value 1
         
     #Re-enables People Icon on Taskbar
     Write-Output "Enabling People icon on Taskbar"
@@ -460,7 +458,7 @@ Function Revert-Changes {
     If (!(Test-Path $People)) {
         New-Item $People 
     }
-    Set-ItemProperty $People  PeopleBand -Value 1 
+    Set-ItemProperty $People PeopleBand -Value 1 
     
     #Re-enables suggestions on start menu
     Write-Output "Enabling suggestions on the Start Menu"
@@ -468,16 +466,16 @@ Function Revert-Changes {
     If (!(Test-Path $Suggestions)) {
         New-Item $Suggestions
     }
-    Set-ItemProperty $Suggestions  SystemPaneSuggestionsEnabled -Value 1 
+    Set-ItemProperty $Suggestions SystemPaneSuggestionsEnabled -Value 1 
         
     #Re-enables scheduled tasks that were disabled when running the Debloat switch
     Write-Output "Enabling scheduled tasks that were disabled"
     Get-ScheduledTask XblGameSaveTaskLogon | Enable-ScheduledTask 
-    Get-ScheduledTask  XblGameSaveTask | Enable-ScheduledTask 
-    Get-ScheduledTask  Consolidator | Enable-ScheduledTask 
-    Get-ScheduledTask  UsbCeip | Enable-ScheduledTask 
-    Get-ScheduledTask  DmClient | Enable-ScheduledTask 
-    Get-ScheduledTask  DmClientOnScenarioDownload | Enable-ScheduledTask 
+    Get-ScheduledTask XblGameSaveTask | Enable-ScheduledTask 
+    Get-ScheduledTask Consolidator | Enable-ScheduledTask 
+    Get-ScheduledTask UsbCeip | Enable-ScheduledTask 
+    Get-ScheduledTask DmClient | Enable-ScheduledTask 
+    Get-ScheduledTask DmClientOnScenarioDownload | Enable-ScheduledTask 
 
     Write-Output "Re-enabling and starting WAP Push Service"
     #Enable and start WAP Push Service
@@ -492,14 +490,16 @@ Function Revert-Changes {
 
 Function CheckDMWService {
 
-  Param([switch]$Debloat)
+    Param([switch]$Debloat)
   
-If (Get-Service -Name dmwappushservice | Where-Object {$_.StartType -eq "Disabled"}) {
-    Set-Service -Name dmwappushservice -StartupType Automatic}
+    If (Get-Service -Name dmwappushservice | Where-Object {$_.StartType -eq "Disabled"}) {
+        Set-Service -Name dmwappushservice -StartupType Automatic
+    }
 
-If(Get-Service -Name dmwappushservice | Where-Object {$_.Status -eq "Stopped"}) {
-   Start-Service -Name dmwappushservice} 
-  }
+    If (Get-Service -Name dmwappushservice | Where-Object {$_.Status -eq "Stopped"}) {
+        Start-Service -Name dmwappushservice
+    } 
+}
     
 Function Enable-EdgePDF {
     Write-Output "Setting Edge back to default"
@@ -507,23 +507,23 @@ Function Enable-EdgePDF {
     $NoProgids = "HKCR:\.pdf\OpenWithProgids"
     $NoWithList = "HKCR:\.pdf\OpenWithList"
     #Sets edge back to default
-    If (Get-ItemProperty $NoPDF  NoOpenWith) {
-        Remove-ItemProperty $NoPDF  NoOpenWith
+    If (Get-ItemProperty $NoPDF NoOpenWith) {
+        Remove-ItemProperty $NoPDF NoOpenWith
     } 
-    If (Get-ItemProperty $NoPDF  NoStaticDefaultVerb) {
-        Remove-ItemProperty $NoPDF  NoStaticDefaultVerb 
+    If (Get-ItemProperty $NoPDF NoStaticDefaultVerb) {
+        Remove-ItemProperty $NoPDF NoStaticDefaultVerb 
     }       
-    If (Get-ItemProperty $NoProgids  NoOpenWith) {
-        Remove-ItemProperty $NoProgids  NoOpenWith 
+    If (Get-ItemProperty $NoProgids NoOpenWith) {
+        Remove-ItemProperty $NoProgids NoOpenWith 
     }        
-    If (Get-ItemProperty $NoProgids  NoStaticDefaultVerb) {
-        Remove-ItemProperty $NoProgids  NoStaticDefaultVerb 
+    If (Get-ItemProperty $NoProgids NoStaticDefaultVerb) {
+        Remove-ItemProperty $NoProgids NoStaticDefaultVerb 
     }        
-    If (Get-ItemProperty $NoWithList  NoOpenWith) {
-        Remove-ItemProperty $NoWithList  NoOpenWith
+    If (Get-ItemProperty $NoWithList NoOpenWith) {
+        Remove-ItemProperty $NoWithList NoOpenWith
     }    
-    If (Get-ItemProperty $NoWithList  NoStaticDefaultVerb) {
-        Remove-ItemProperty $NoWithList  NoStaticDefaultVerb
+    If (Get-ItemProperty $NoWithList NoStaticDefaultVerb) {
+        Remove-ItemProperty $NoWithList NoStaticDefaultVerb
     }
         
     #Removes an underscore '_' from the Registry key for Edge
@@ -539,13 +539,11 @@ Function FixWhitelistedApps {
             
     Param()
     
-    If (!(Get-AppxPackage -AllUsers | Select Microsoft.Paint3D, Microsoft.WindowsCalculator, Microsoft.WindowsStore, Microsoft.Windows.Photos)) {
+    If (!(Get-AppxPackage -AllUsers | Select-Object Microsoft.WindowsCalculator, Microsoft.WindowsStore)) {
     
         #Credit to abulgatz for these 4 lines of code
-        Get-AppxPackage -allusers Microsoft.Paint3D | Foreach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-        Get-AppxPackage -allusers Microsoft.WindowsCalculator | Foreach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-        Get-AppxPackage -allusers Microsoft.WindowsStore | Foreach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-        Get-AppxPackage -allusers Microsoft.Windows.Photos | Foreach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"} 
+        Get-AppxPackage -allusers Microsoft.WindowsCalculator | ForEach-Object { Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml" }
+        Get-AppxPackage -allusers Microsoft.WindowsStore | ForEach-Object { Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml" }
     } 
 }
 
@@ -583,7 +581,7 @@ Function UninstallOneDrive {
 
     Write-Output "Uninstalling OneDrive"
     
-    New-PSDrive  HKCR -PSProvider Registry -Root HKEY_CLASSES_ROOT
+    New-PSDrive HKCR -PSProvider Registry -Root HKEY_CLASSES_ROOT
     $onedrive = "$env:SYSTEMROOT\SysWOW64\OneDriveSetup.exe"
     $ExplorerReg1 = "HKCR:\CLSID\{018D5C66-4533-4307-9B53-224DE2ED1FE6}"
     $ExplorerReg2 = "HKCR:\Wow6432Node\CLSID\{018D5C66-4533-4307-9B53-224DE2ED1FE6}"
@@ -618,27 +616,24 @@ Function UninstallOneDrive {
     Start-Process explorer.exe -NoNewWindow
     
     Write-Host "Enabling the Group Policy 'Prevent the usage of OneDrive for File Storage'."
-        $OneDriveKey = 'HKLM:Software\Policies\Microsoft\Windows\OneDrive'
-        If (!(Test-Path $OneDriveKey)) {
-            Mkdir $OneDriveKey 
-        }
+    $OneDriveKey = 'HKLM:Software\Policies\Microsoft\Windows\OneDrive'
+    If (!(Test-Path $OneDriveKey)) {
+        Mkdir $OneDriveKey 
+    }
 
-        $DisableAllOneDrive = 'HKLM:Software\Policies\Microsoft\Windows\OneDrive'
-        If (Test-Path $DisableAllOneDrive) {
-            New-ItemProperty $DisableAllOneDrive -Name OneDrive -Value DisableFileSyncNGSC -Verbose 
-        }
+    $DisableAllOneDrive = 'HKLM:Software\Policies\Microsoft\Windows\OneDrive'
+    If (Test-Path $DisableAllOneDrive) {
+        New-ItemProperty $DisableAllOneDrive -Name OneDrive -Value DisableFileSyncNGSC -Verbose 
+    }
 }
 
 Function UnpinStart {
-#https://superuser.com/questions/1068382/how-to-remove-all-the-tiles-in-the-windows-10-start-menu
-#Unpins all tiles from the Start Menu
+    #https://superuser.com/questions/1068382/how-to-remove-all-the-tiles-in-the-windows-10-start-menu
+    #Unpins all tiles from the Start Menu
     Write-Output "Unpinning all tiles from the start menu"
     (New-Object -Com Shell.Application).
     NameSpace('shell:::{4234d49b-0245-4df3-b780-3893943456e1}').
-    Items() |
-    %{ $_.Verbs() } |
-    ?{$_.Name -match 'Un.*pin from Start'} |
-    %{$_.DoIt()}
+    Items() | ForEach-Object { $_.Verbs() } | Where-Object {$_.Name -match 'Un.*pin from Start'} | ForEach-Object {$_.DoIt()}
 }
 
 #GUI prompt Debloat/Revert options and GUI variables
@@ -670,7 +665,7 @@ Switch ($Prompt1) {
             Yes { 
                 #Creates a "drive" to access the HKCR (HKEY_CLASSES_ROOT)
                 Write-Output "Creating PSDrive 'HKCR' (HKEY_CLASSES_ROOT). This will be used for the duration of the script as it is necessary for the removal and modification of specific registry keys."
-                New-PSDrive  HKCR -PSProvider Registry -Root HKEY_CLASSES_ROOT
+                New-PSDrive HKCR -PSProvider Registry -Root HKEY_CLASSES_ROOT
                 Start-Sleep 1
                 Write-Output "Uninstalling bloatware, please wait."
                 DebloatAll
@@ -704,7 +699,7 @@ Switch ($Prompt1) {
             No {
                 #Creates a "drive" to access the HKCR (HKEY_CLASSES_ROOT)
                 Write-Output "Creating PSDrive 'HKCR' (HKEY_CLASSES_ROOT). This will be used for the duration of the script as it is necessary for the removal and modification of specific registry keys."
-                New-PSDrive  HKCR -PSProvider Registry -Root HKEY_CLASSES_ROOT
+                New-PSDrive HKCR -PSProvider Registry -Root HKEY_CLASSES_ROOT
                 Start-Sleep 1
                 Write-Output "Uninstalling bloatware, please wait."
                 DebloatBlacklist
@@ -758,15 +753,15 @@ Switch ($Prompt1) {
                 Write-Output "You have chosen to skip removing OneDrive from your machine."
             }
         }
-				#Prompt asking if you'd like to unpin all start items
-		$Prompt5 = [Windows.MessageBox]::Show($Unpin, "Unpin", $Button, $ErrorIco) 
+        #Prompt asking if you'd like to unpin all start items
+        $Prompt5 = [Windows.MessageBox]::Show($Unpin, "Unpin", $Button, $ErrorIco) 
         Switch ($Prompt5) {
             Yes {
                 UnpinStart
-				Write-Output "Start Apps unpined."
+                Write-Output "Start Apps unpined."
             }
             No {
-				Write-Output "You have chosen to skip removing OneDrive from your machine."
+                Write-Output "You have chosen to skip removing OneDrive from your machine."
 
             }
         }
@@ -775,8 +770,9 @@ Switch ($Prompt1) {
             Yes {
                 Write-Output "Initializing the installation of .NET 3.5..."
                 Try {
-                DISM /Online /Enable-Feature /FeatureName:NetFx3 /All
-                Write-Output ".NET 3.5 has been successfully installed!" }
+                    DISM /Online /Enable-Feature /FeatureName:NetFx3 /All
+                    Write-Output ".NET 3.5 has been successfully installed!" 
+                }
                 Catch {
                     $_
                 }
@@ -808,7 +804,7 @@ Switch ($Prompt1) {
     No {
         Write-Output "Reverting changes..."
         Write-Output "Creating PSDrive 'HKCR' (HKEY_CLASSES_ROOT). This will be used for the duration of the script as it is necessary for the modification of specific registry keys."
-        New-PSDrive  HKCR -PSProvider Registry -Root HKEY_CLASSES_ROOT
+        New-PSDrive HKCR -PSProvider Registry -Root HKEY_CLASSES_ROOT
         Revert-Changes
         #Prompt asking to revert edge changes as well
         $Prompt6 = [Windows.MessageBox]::Show($EdgePdf2, "Revert Edge", $Button, $ErrorIco)
@@ -818,7 +814,7 @@ Switch ($Prompt1) {
                 Write-Output "Edge will no longer be disabled from being used as the default Edge PDF viewer."
             }
             No {
-               Write-Output "You have chosen to keep the setting that disallows Edge to be the default PDF viewer."
+                Write-Output "You have chosen to keep the setting that disallows Edge to be the default PDF viewer."
             }
         }
         #Prompt asking if you'd like to reboot your machine
